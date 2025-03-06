@@ -1,5 +1,7 @@
 list(APPEND fortran_src
-  tave.f
+  gefs_6h_ave_1mem.f90 
+  prlevel.f90
+  printinfr.f90
 )
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES "^(Intel)$")
@@ -8,15 +10,10 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(GNU)$")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8")
 endif()
 
-set(exe_name tave.x)
+set(exe_name gefs_6h_ave_1mem.x)
 add_executable(${exe_name} ${fortran_src})
-if(LINK_W3EMC)
-  target_link_libraries(${exe_name} PRIVATE bacio::bacio_4
+target_link_libraries(${exe_name} PRIVATE bacio::bacio_4
                                           w3emc::w3emc_d
                                           g2::g2_d)
-else()
-  target_link_libraries(${exe_name} PRIVATE bacio::bacio_4
-                                          g2::g2_d)
-endif()
 
 install(TARGETS ${exe_name} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
